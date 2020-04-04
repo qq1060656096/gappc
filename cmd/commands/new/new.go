@@ -6,6 +6,7 @@ import (
 	"gappc/cmd/commands"
 	"gappc/utils"
 	"github.com/urfave/cli"
+	"io"
 	"os"
 	"strings"
 )
@@ -52,8 +53,25 @@ func CreateProject(ctx * cli.Context) (err error) {
 		return
 	}
 	projectPath := fmt.Sprintf("%s/%s", cmdPath, projectName)
+	// crate bootstrap
+	createBootstrap(projectPath, stdout)
+	// create config
+	createConfig(projectPath, stdout)
+	// create middleware
+	CreateMiddleware(projectPath, stdout, "DemoAuth")
+	return nil
+}
 
-	projectConfigPath := projectPath + "/" + utils.ProjectDirs["config"]
+func createBootstrap(projectPath string, stdout io.Writer) {
+	projectBootstrapPath := projectPath + "/" + utils.ProjectDirs[utils.BootstrapDir]
+	os.MkdirAll(projectBootstrapPath, os.ModePerm)
+	projectBootstrapFile := projectBootstrapPath + "/application.go"
+	utils.WriteToFile(projectBootstrapFile, bootstrapTemplate)
+	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", projectBootstrapFile, "\x1b[0m")
+}
+
+func createConfig(projectPath string, stdout io.Writer)  {
+	projectConfigPath := projectPath + "/" + utils.ProjectDirs[utils.ConfigDir]
 	os.MkdirAll(projectConfigPath, os.ModePerm)
 	configFile := projectConfigPath + "/.app.env"
 	utils.WriteToFile(configFile, appConfigTemplate)
@@ -64,8 +82,12 @@ func CreateProject(ctx * cli.Context) (err error) {
 	configFile = projectConfigPath + "/.db.env"
 	utils.WriteToFile(configFile, dbConfigTemplate)
 	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", configFile, "\x1b[0m")
-	return nil
 }
 
-
-
+func CreateMiddleware(projectPath string, stdout io.Writer, middlewareName string) {
+	path := projectPath + "/" + utils.ProjectDirs[utils.MiddlewareDir]
+	os.MkdirAll(path, os.ModePerm)
+	file := path + fmt.Sprintf("/%s.go", utils.ToSnakeCase(middlewareName))
+	utils.WriteToFile(file, strings.Replace(MiddlewareTemplate, "{{middlewareName}}", utils.ToCamelCase(middlewareName), -1))
+	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", file, "\x1b[0m")
+}

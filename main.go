@@ -20,7 +20,6 @@ func main() {
 			Email: "1060656096@qq.com",
 		},
 	}
-	fmt.Println(commands.AvailableCommands)
 	app.Commands = commands.AvailableCommands
 	err := app.Run(os.Args)
 	if err != nil {

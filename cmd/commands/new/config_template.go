@@ -1,15 +1,13 @@
 package new
 
-var appConfigTemplate = `
-# 应用配置
+var appConfigTemplate = `# 应用配置
 ADDR="localhost:8080"
 
 # 日志格式
 LOG_DIR=""# 默认 runtime/log
 `
 
-var cacheConfigTemplate = `
-# ******** redis config start ********
+var cacheConfigTemplate = `# ******** redis config start ********
 
 # 默认redis
 DEFAULT_REDIS=true
@@ -27,8 +25,7 @@ AUTH_REDIS_DB="12"
 `
 
 
-var dbConfigTemplate = `
-# ******** database config start ********
+var dbConfigTemplate = `# ******** database config start ********
 # 默认数据
 DEFAULT_DB=true # 连接默认数据
 DEFAULT_DB_USERNAME="root3"
