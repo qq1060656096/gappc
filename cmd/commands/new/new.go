@@ -65,8 +65,12 @@ func CreateProject(ctx * cli.Context) (err error) {
 	generate.CreateConfig(projectPath, stdout)
 	// create middleware
 	generate.CreateMiddleware(projectPath, stdout, "DemoAuth")
+	// create theme
+	generate.CreateTheme(projectPath, stdout, "default", "demo", "test.tpl")
 	// create routers
 	generate.CreateRouters(projectPath, stdout)
+	// create log
+	generate.CreateLog(projectPath, stdout)
 	// create main
 	generate.CreateMain(projectPath, stdout, projectName)
 
