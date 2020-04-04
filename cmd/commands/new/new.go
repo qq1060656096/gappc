@@ -16,7 +16,7 @@ var CmdNew = cli.Command{
 	Name:                   "new",
 	ShortName:              "",
 	Aliases:                nil,
-	Usage:                  "project name",
+	Usage:                  "projectName",
 	UsageText:              "",
 	Description:            "",
 	ArgsUsage:              "",
@@ -46,7 +46,7 @@ func init()  {
 func CreateProject(ctx * cli.Context) (err error) {
 	stdout := os.Stdout
 	if ctx.NArg() < 1 {
-		return errors.New(fmt.Sprintf("Argument [appname] is missing"))
+		return errors.New(fmt.Sprintf("Argument [projectName] is missing"))
 	}
 	projectName := strings.ToLower(ctx.Args().Get(0))
 	cmdPath, err := utils.GetCmdPath()
