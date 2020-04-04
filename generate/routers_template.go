@@ -49,10 +49,10 @@ import (
 
 // AppV1 应用v1版本路由
 func AppV1(engine *gin.Engine) {
-	g := engine.Group("/app/v1")
-	{
-		//g.GET("/demo/simple-html", demo.Get)
-	}
+	//g := engine.Group("/app/v1")
+	//{
+	//	g.GET("/demo/simple-html", demo.Get)
+	//}
 }
 
 // AppV2 应用v2版本路由
