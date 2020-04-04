@@ -1,6 +1,6 @@
-package new
+package generate
 
-var MiddlewareTemplate = `package middleware
+const MiddlewareTemplate = `package middleware
 
 import (
 	"github.com/gin-gonic/gin"

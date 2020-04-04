@@ -1,6 +1,6 @@
-package new
+package generate
 
-var bootstrapTemplate = `package bootstrap
+const BootstrapTemplate = `package bootstrap
 
 import (
 	"github.com/joho/godotenv"

@@ -1,4 +1,4 @@
-package utils
+package generate
 
 const (
 	CommandDir = "command"
@@ -19,8 +19,8 @@ const (
 var ProjectDirs = map[string]string{
 	CommandDir : "app/command",
 	EventDir: "app/event",
-	ApiDir: "app/http/controller/api/v1",
-	AppDir: "app/http/controller/app/v1",
+	ApiDir: "app/http/controller/api",
+	AppDir: "app/http/controller/app",
 	RequestDir: "app/http/request",
 	ListenerDir: "app/listener",
 	ModelDir: "app/model",

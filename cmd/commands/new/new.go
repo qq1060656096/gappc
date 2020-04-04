@@ -4,10 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"gappc/cmd/commands"
+	"gappc/generate"
 	"gappc/utils"
 	"github.com/urfave/cli"
-	"io"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -53,41 +54,31 @@ func CreateProject(ctx * cli.Context) (err error) {
 		return
 	}
 	projectPath := fmt.Sprintf("%s/%s", cmdPath, projectName)
+	// create api
+	generate.CreateApi(projectPath, stdout, "v1/demo/DemoApi")
+	// create app
+	generate.CreateApp(projectPath, stdout, "v1/demo/DemoApp")
+
 	// crate bootstrap
-	createBootstrap(projectPath, stdout)
+	generate.CreateBootstrap(projectPath, stdout)
 	// create config
-	createConfig(projectPath, stdout)
+	generate.CreateConfig(projectPath, stdout)
 	// create middleware
-	CreateMiddleware(projectPath, stdout, "DemoAuth")
+	generate.CreateMiddleware(projectPath, stdout, "DemoAuth")
+	// create routers
+	generate.CreateRouters(projectPath, stdout)
+	// create main
+	generate.CreateMain(projectPath, stdout, projectName)
+
+	// 2. 初始化项目
+	cmd := exec.Command( "go", "mod", "init", projectName)
+	cmd.Dir = cmdPath+"/"+projectName
+	cmd.Stdout = os.Stdout
+	err = cmd.Start()
+	if err != nil {
+		fmt.Fprintf(stdout, "\t%s%sfail%s\t %s/go.mod%s\n", "\x1b[33m", "\x1b[31m", "\x1b[21m", cmd.Dir, "\x1b[0m")
+		return
+	}
 	return nil
 }
 
-func createBootstrap(projectPath string, stdout io.Writer) {
-	projectBootstrapPath := projectPath + "/" + utils.ProjectDirs[utils.BootstrapDir]
-	os.MkdirAll(projectBootstrapPath, os.ModePerm)
-	projectBootstrapFile := projectBootstrapPath + "/application.go"
-	utils.WriteToFile(projectBootstrapFile, bootstrapTemplate)
-	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", projectBootstrapFile, "\x1b[0m")
-}
-
-func createConfig(projectPath string, stdout io.Writer)  {
-	projectConfigPath := projectPath + "/" + utils.ProjectDirs[utils.ConfigDir]
-	os.MkdirAll(projectConfigPath, os.ModePerm)
-	configFile := projectConfigPath + "/.app.env"
-	utils.WriteToFile(configFile, appConfigTemplate)
-	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", configFile, "\x1b[0m")
-	configFile = projectConfigPath + "/.cache.env"
-	utils.WriteToFile(configFile, cacheConfigTemplate)
-	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", configFile, "\x1b[0m")
-	configFile = projectConfigPath + "/.db.env"
-	utils.WriteToFile(configFile, dbConfigTemplate)
-	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", configFile, "\x1b[0m")
-}
-
-func CreateMiddleware(projectPath string, stdout io.Writer, middlewareName string) {
-	path := projectPath + "/" + utils.ProjectDirs[utils.MiddlewareDir]
-	os.MkdirAll(path, os.ModePerm)
-	file := path + fmt.Sprintf("/%s.go", utils.ToSnakeCase(middlewareName))
-	utils.WriteToFile(file, strings.Replace(MiddlewareTemplate, "{{middlewareName}}", utils.ToCamelCase(middlewareName), -1))
-	fmt.Fprintf(stdout, "\t%s%screate%s\t %s%s\n", "\x1b[32m", "\x1b[1m", "\x1b[21m", file, "\x1b[0m")
-}
