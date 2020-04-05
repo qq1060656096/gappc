@@ -65,6 +65,13 @@ func CreateProject(ctx * cli.Context) (err error) {
 	generate.CreateApi(projectPath, stdout, "v1/demo/DemoApi")
 	// create app
 	generate.CreateApp(projectPath, stdout, "v1/demo/DemoApp")
+	// create theme
+	generate.CreateTheme(projectPath, stdout, "default", "demo", "create.tmpl")
+	generate.CreateTheme(projectPath, stdout, "default", "demo", "delete.tmpl")
+	generate.CreateTheme(projectPath, stdout, "default", "demo", "detail.tmpl")
+	generate.CreateTheme(projectPath, stdout, "default", "demo", "list.tmpl")
+	generate.CreateTheme(projectPath, stdout, "default", "demo", "update.tmpl")
+
 
 	// crate bootstrap
 	generate.CreateBootstrap(projectPath, stdout)
@@ -72,8 +79,7 @@ func CreateProject(ctx * cli.Context) (err error) {
 	generate.CreateConfig(projectPath, stdout)
 	// create middleware
 	generate.CreateMiddleware(projectPath, stdout, "DemoAuth")
-	// create theme
-	generate.CreateTheme(projectPath, stdout, "default", "demo", "test.tpl")
+
 	// create routers
 	generate.CreateRouters(projectPath, stdout)
 	// create log

@@ -5,6 +5,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"{{projectName}}/app/http/controller/api/v1/demo"
 )
 
 // ApiV1 接口v1版本路由
@@ -13,10 +14,11 @@ func ApiV1(engine *gin.Engine) {
 	g := engine.Group("/api/v1")
 	{
 		// 简单 get post put delete请求示例
-		//g.GET("/demo/simple/get", demo.Get)
-		//g.POST("/demo/simple/post", demo.Post)
-		//g.PUT("/demo/simple/put", demo.Put)
-		//g.DELETE("/demo/simple/delete", demo.Delete)
+		g.POST("/demo/demoApi/post", demo.DemoApiCreate)
+		g.DELETE("/demo/demoApi/delete", demo.DemoApiDelete)
+		g.PUT("/demo/demoApi/put", demo.DemoApiUpdate)
+		g.GET("/demo/demoApi/get", demo.DemoApiGet)
+		g.GET("/demo/demoApi/get/detail", demo.DemoApiGetDetail)
 
 		// 中间件
 		//g.Use(middleware.DemoAuth()).GET("/demo/middleware", demo.Middleware)
@@ -45,14 +47,20 @@ const appRoutersTemplate = `package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"{{projectName}}/app/http/controller/app/v1/demo"
 )
 
 // AppV1 应用v1版本路由
 func AppV1(engine *gin.Engine) {
-	//g := engine.Group("/app/v1")
-	//{
-	//	g.GET("/demo/simple-html", demo.Get)
-	//}
+	g := engine.Group("/app/v1")
+	{
+		// 简单 get post put delete请求示例
+		g.POST("/demo/DemoApp/post", demo.DemoAppCreate)
+		g.DELETE("/demo/DemoApp/delete", demo.DemoAppDelete)
+		g.PUT("/demo/DemoApp/put", demo.DemoAppUpdate)
+		g.GET("/demo/DemoApp/get", demo.DemoAppGet)
+		g.GET("/demo/DemoApp/get/detail", demo.DemoAppGetDetail)
+	}
 }
 
 // AppV2 应用v2版本路由

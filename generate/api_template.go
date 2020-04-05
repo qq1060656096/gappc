@@ -30,7 +30,7 @@ func {{apiName}}Get(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	offset := (page - 1) * pageSize
-	c.JSON(http.StatusOK, api.NewResult("200", "success").Paging(nil, count, page, pageSize))
+	c.JSON(http.StatusOK, api.NewResult("200", "success").Paging(offset, count, page, pageSize))
 }
 
 func {{apiName}}GetDetail(c *gin.Context) {
