@@ -5,7 +5,7 @@ const BootstrapTemplate = `package bootstrap
 import (
 	"github.com/joho/godotenv"
 	"github.com/lestrrat/go-file-rotatelogs"
-	"github.com/qq1060656096/go-common"
+	"github.com/qq1060656096/common"
 	"github.com/sirupsen/logrus"
 	"io"
 	"path/filepath"
