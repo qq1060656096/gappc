@@ -6,7 +6,7 @@ import (
 	"{{projectName}}/bootstrap"
 	"{{projectName}}/routers"
 	"github.com/gin-gonic/gin"
-	"github.com/qq1060656096/go-common"
+	"github.com/qq1060656096/common"
 )
 
 func main() {
