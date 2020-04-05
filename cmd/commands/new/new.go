@@ -54,6 +54,13 @@ func CreateProject(ctx * cli.Context) (err error) {
 		return
 	}
 	projectPath := fmt.Sprintf("%s/%s", cmdPath, projectName)
+
+	ok, err := utils.CheckPathExists(projectPath)
+	if ok {
+		fmt.Fprintf(stdout, "\t%s%sfail%s\t%s project exist%s\n", "\x1b[33m", "\x1b[31m", "\x1b[21m", projectPath, "\x1b[0m")
+		return
+	}
+
 	// create api
 	generate.CreateApi(projectPath, stdout, "v1/demo/DemoApi")
 	// create app

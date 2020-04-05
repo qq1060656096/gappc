@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -11,7 +13,24 @@ func MustCheckErr(err error) {
 	}
 }
 
+func CheckPathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
+}
+
 func WriteToFile(fileName, content string) {
+	ok, err := CheckPathExists(fileName)
+	if ok {
+		str := fmt.Sprintf("fail %s file exist\n%v", fileName, err)
+		panic(errors.New(str))
+	}
+
 	f, err := os.Create(fileName)
 	defer f.Close()
 	MustCheckErr(err)

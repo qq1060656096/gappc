@@ -4,7 +4,7 @@ const apiTemplate = `package {{packageName}}
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/qq1060656096/go-api"
+	"github.com/qq1060656096/api"
 	// "github.com/qq1060656096/common"
 	"net/http"
 	"strconv"
